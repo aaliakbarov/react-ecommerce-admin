@@ -2,11 +2,10 @@ import { useEffect, useState } from 'react';
 
 import { useUserUptime } from '@/hooks/useUserUptime';
 
-import { supabase } from '@/services/supabaseClient';
-
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import { CircleCheck, Clock, Database, Wifi } from 'lucide-react';
+import { checkStatus } from '@/lib/utils';
 
 export default function SystemStatusCard() {
     const [dbStatus, setDbStatus] = useState({
@@ -14,29 +13,12 @@ export default function SystemStatusCard() {
         color: 'text-yellow-500',
     });
     const [latency, setLatency] = useState(null);
-
-    const version = import.meta.env.VITE_APP_VERSION || 'Unknown';
     ////
     useEffect(() => {
-        const checkStatus = async () => {
-            const start = performance.now();
-            try {
-                const { error } = await supabase
-                    .from('Orders')
-                    .select('*')
-                    .limit(1);
-                const end = performance.now();
-                if (error) throw error;
-                setDbStatus({ label: 'Connected', color: 'text-green-600' });
-                setLatency(`${Math.round(end - start)}ms`);
-            } catch {
-                setDbStatus({ label: 'Unavailable', color: 'text-red-600' });
-                setLatency('–');
-            }
-        };
-
-        checkStatus();
+        checkStatus(setDbStatus, setLatency);
     }, []);
+    ////
+    const version = import.meta.env.VITE_APP_VERSION || 'Unknown';
     ////
     const uptime = useUserUptime();
 

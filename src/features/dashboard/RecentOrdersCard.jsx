@@ -1,10 +1,10 @@
-import { supabase } from '@/services/supabaseClient';
 import { useQuery } from '@tanstack/react-query';
 
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import { Loader2 } from 'lucide-react';
+import { fetchRecentOrders } from '@/services/apiOrders';
 
 export default function RecentOrdersCard() {
     const {
@@ -13,16 +13,7 @@ export default function RecentOrdersCard() {
         isError,
     } = useQuery({
         queryKey: ['recentOrders'],
-        queryFn: async () => {
-            const { data, error } = await supabase
-                .from('Orders')
-                .select('id, customer_id, amount, status, created_at')
-                .order('created_at', { ascending: false })
-                .limit(5);
-
-            if (error) throw error;
-            return data;
-        },
+        queryFn: fetchRecentOrders,
     });
 
     return (
@@ -65,8 +56,8 @@ export default function RecentOrdersCard() {
                                             order.status === 'shipped'
                                                 ? 'default'
                                                 : order.status === 'pending'
-                                                ? 'secondary'
-                                                : 'destructive'
+                                                  ? 'secondary'
+                                                  : 'destructive'
                                         }
                                     >
                                         {order.status}
@@ -74,7 +65,7 @@ export default function RecentOrdersCard() {
                                 </td>
                                 <td className='py-2'>
                                     {new Date(
-                                        order.created_at
+                                        order.created_at,
                                     ).toLocaleDateString()}
                                 </td>
                             </tr>

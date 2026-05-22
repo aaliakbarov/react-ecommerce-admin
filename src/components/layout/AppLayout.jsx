@@ -4,7 +4,7 @@ import AppSidebar from '../ui/AppSidebar';
 import { SidebarProvider } from '../ui/sidebar';
 import MobileSidebar from '../ui/MobileSidebar';
 
-import { useAuth } from '@/features/auth/AuthContext';
+import { useAuth } from '@/context/AuthContext';
 import { AccountBox } from '../../features/auth/AccountBox';
 
 import {

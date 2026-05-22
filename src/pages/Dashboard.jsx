@@ -3,20 +3,16 @@ import { useQuery } from '@tanstack/react-query';
 import ChartCard from '@/features/dashboard/ChartCard';
 import RecentOrdersCard from '@/features/dashboard/RecentOrdersCard';
 import SystemStatusCard from '@/features/dashboard/SystemStatusCard';
+import StatCards from '@/features/dashboard/StatCards';
 
 import { fetchOrders } from '@/services/apiOrders';
 
-import { aggregateRevenueByDay } from '@/lib/utils';
-import StatCards from '@/features/dashboard/StatCards';
-
 export default function Dashboard() {
-    const { data: orders, isLoading } = useQuery({
+    const { data: orders = [], isLoading } = useQuery({
         queryKey: ['orders'],
         queryFn: fetchOrders,
     });
-    const safeOrders = orders || [];
-
-    const chartData = aggregateRevenueByDay(safeOrders);
+    // const safeOrders = orders || [];
 
     return (
         <div className='space-y-6'>
@@ -27,7 +23,7 @@ export default function Dashboard() {
             </div>
 
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
-                <ChartCard data={chartData} isLoading={isLoading} />
+                <ChartCard orders={orders} isLoading={isLoading} />
                 <SystemStatusCard />
             </div>
 

@@ -1,3 +1,4 @@
+import { supabase } from '@/services/supabaseClient';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -19,3 +20,17 @@ export function aggregateRevenueByDay(orders) {
         revenue: Number((total * 0.7).toFixed(2)),
     }));
 }
+
+export const checkStatus = async (setDbStatus, setLatency) => {
+    const start = performance.now();
+    try {
+        const { error } = await supabase.from('Orders').select('*').limit(1);
+        const end = performance.now();
+        if (error) throw error;
+        setDbStatus({ label: 'Connected', color: 'text-green-600' });
+        setLatency(`${Math.round(end - start)}ms`);
+    } catch {
+        setDbStatus({ label: 'Unavailable', color: 'text-red-600' });
+        setLatency('–');
+    }
+};

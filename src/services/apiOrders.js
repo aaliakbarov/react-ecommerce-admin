@@ -10,13 +10,24 @@ export const fetchOrders = async () => {
     return data;
 };
 
+export const fetchRecentOrders = async () => {
+    const { data, error } = await supabase
+        .from('Orders')
+        .select('id, customer_id, amount, status, created_at')
+        .order('created_at', { ascending: false })
+        .limit(5);
+
+    if (error) throw error;
+    return data;
+};
+
 export async function CreateOrder(formData, customers, products) {
     const customer = customers.find((c) => c.id === formData.customer_id);
     if (!customer) throw new Error('Invalid customer');
 
     const enrichedItems = formData.items.map((item) => {
         const product = products.find(
-            (p) => String(p.id) === String(item.product_id)
+            (p) => String(p.id) === String(item.product_id),
         );
         return {
             product_id: Number(item.product_id),
@@ -27,7 +38,7 @@ export async function CreateOrder(formData, customers, products) {
 
     const totalAmount = enrichedItems.reduce(
         (sum, item) => sum + item.qnt * item.unit_price,
-        0
+        0,
     );
 
     const newOrder = {

@@ -13,7 +13,7 @@ import LoginPage from './pages/Login.jsx';
 
 import AuthCallback from './features/auth/AuthCallback.jsx';
 import ProtectedRoute from './features/auth/ProtectedRoute.jsx';
-import { AuthProvider } from './features/auth/AuthContext.jsx';
+import { AuthProvider } from '@/context/AuthContext';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -55,7 +55,7 @@ createRoot(document.getElementById('root')).render(
         <QueryClientProvider client={queryClient}>
             <AuthProvider>
                 <Toaster richColors position='top-center' duration={2000} />
-                <ReactQueryDevtools initialIsOpen={false} />
+                <ReactQueryDevtools initialIsOpen={true} />
                 <RouterProvider router={router} />
             </AuthProvider>
         </QueryClientProvider>

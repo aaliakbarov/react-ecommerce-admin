@@ -1,6 +1,6 @@
 import { supabase } from '@/services/supabaseClient';
 import { useState } from 'react';
-import { useAuth } from '@/features/auth/AuthContext';
+import { useAuth } from '@/context/AuthContext';
 import { Link, redirect } from 'react-router-dom';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';

@@ -1,14 +1,9 @@
-import StatCard from './StatCard';
+import useStats from '@/hooks/useStats';
+import StatCard from '../../components/ui/StatCard';
 
 export default function StatCards({ orders }) {
-    const totalSales =
-        orders?.reduce((sum, order) => sum + (order.amount || 0), 0) || 0;
-    const totalOrders = orders?.length || 0;
-    const uniqueCustomers = orders
-        ? new Set(orders.map((o) => o.customer_id)).size
-        : 0;
-    const estimatedCost = totalSales * 0.3; // assume 30% cost of goods
-    const revenue = totalSales - estimatedCost;
+    const { totalOrders, totalSales, uniqueCustomers, revenue } =
+        useStats(orders);
 
     return (
         <>

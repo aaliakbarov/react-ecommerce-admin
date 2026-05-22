@@ -10,17 +10,20 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import { Loader2 } from 'lucide-react';
+import { aggregateRevenueByDay } from '@/lib/utils';
 
-export default function ChartCard({ data, isLoading }) {
+export default function ChartCard({ orders, isLoading }) {
+    const chartData = aggregateRevenueByDay(orders);
+
     return (
         <Card>
             <CardHeader>
                 <CardTitle>Revenue Trend (Daily)</CardTitle>
             </CardHeader>
             <CardContent className='h-[300px]'>
-                {!isLoading && data.length > 0 ? (
+                {!isLoading && chartData.length > 0 ? (
                     <ResponsiveContainer width='100%' height={300}>
-                        <LineChart data={data}>
+                        <LineChart data={chartData}>
                             <XAxis dataKey='date' />
                             <YAxis />
                             <Tooltip />
