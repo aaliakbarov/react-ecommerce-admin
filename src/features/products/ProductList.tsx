@@ -27,7 +27,7 @@ export function ProductList() {
     const itemsPerPage = 10;
     const paginated = products?.slice(
         (page - 1) * itemsPerPage,
-        page * itemsPerPage
+        page * itemsPerPage,
     );
     const totalPages = products ? Math.ceil(products.length / itemsPerPage) : 1;
     const pagination = { page, totalPages, setPage };

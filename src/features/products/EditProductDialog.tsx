@@ -22,6 +22,8 @@ import { Pencil } from 'lucide-react';
 
 import { toast } from 'sonner';
 
+import type { Product, UpdateProduct } from '@/types/products';
+
 const formSchema = z.object({
     name: z.string().min(2),
     price: z.coerce.number().min(0),
@@ -29,7 +31,7 @@ const formSchema = z.object({
     status: z.enum(['Active', 'Discontinued']),
 });
 
-export default function EditProductDialog({ product }) {
+export default function EditProductDialog({ product }: { product: Product }) {
     const [open, setOpen] = useState(false);
     ////
     const queryClient = useQueryClient();
@@ -38,7 +40,7 @@ export default function EditProductDialog({ product }) {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm({
+    } = useForm<UpdateProduct>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: product.name,
@@ -49,7 +51,8 @@ export default function EditProductDialog({ product }) {
     });
     ////
     const mutation = useMutation({
-        mutationFn: (data) => updateProduct({ id: product.id, data }),
+        mutationFn: (data: UpdateProduct) =>
+            updateProduct({ id: product.id, data }),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['products'] });
             toast.success('Product updated!');

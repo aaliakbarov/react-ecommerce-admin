@@ -1,6 +1,7 @@
+import type { CreateProduct, Product, UpdateProduct } from '@/types/products';
 import { supabase } from './supabaseClient';
 
-export const fetchProducts = async () => {
+export const fetchProducts = async (): Promise<Product[]> => {
     const { data, error } = await supabase
         .from('Products')
         .select('*')
@@ -14,7 +15,7 @@ export const fetchProducts = async () => {
     return data;
 };
 
-export const insertProduct = async (product) => {
+export const insertProduct = async (product: CreateProduct) => {
     const { error } = await supabase.from('Products').insert([product]);
     if (error) {
         console.error('Insert error:', error.message);
@@ -22,12 +23,18 @@ export const insertProduct = async (product) => {
     }
 };
 
-export const updateProduct = async ({ id, data }) => {
+export const updateProduct = async ({
+    id,
+    data,
+}: {
+    id: Product['id'];
+    data: UpdateProduct;
+}) => {
     const { error } = await supabase.from('Products').update(data).eq('id', id);
     if (error) throw error;
 };
 
-export const deleteProduct = async (id) => {
+export const deleteProduct = async (id: Product['id']) => {
     const { error } = await supabase.from('Products').delete().eq('id', id);
     if (error) throw error;
 };

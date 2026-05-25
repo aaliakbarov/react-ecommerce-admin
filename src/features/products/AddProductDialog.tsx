@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, type Resolver } from 'react-hook-form';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+
+import type { CreateProduct } from '@/types/products';
 
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -37,8 +39,8 @@ export default function AddProductDialog() {
         handleSubmit,
         reset,
         formState: { errors },
-    } = useForm({
-        resolver: zodResolver(formSchema),
+    } = useForm<CreateProduct>({
+        resolver: zodResolver(formSchema) as Resolver<CreateProduct>,
         defaultValues: {
             name: '',
             price: 0,
@@ -48,7 +50,7 @@ export default function AddProductDialog() {
     });
     ////
     const mutation = useMutation({
-        mutationFn: insertProduct,
+        mutationFn: (data: CreateProduct) => insertProduct(data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['products'] });
             toast.success('Product added successfully!');
