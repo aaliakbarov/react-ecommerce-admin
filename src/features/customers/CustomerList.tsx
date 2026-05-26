@@ -7,17 +7,14 @@ import { fetchOrders } from '@/services/apiOrders';
 
 import EditCustomerDialog from './EditCustomerDialog';
 import DeleteCustomerDialog from './DeleteCustomerDialog';
+import { getOrderCount } from '@/lib/utils';
+import type { Customer } from '@/types/customers';
 
-export default function CustomerList({ paginated }) {
+export default function CustomerList({ paginated }: { paginated: Customer[] }) {
     const { data: ordersData = [] } = useQuery({
         queryKey: ['orders'],
         queryFn: fetchOrders,
     });
-    // Helper to count orders per customer
-    const getOrderCount = (customerId) => {
-        return ordersData.filter((order) => order.customer_id === customerId)
-            .length;
-    };
 
     return (
         <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
@@ -43,15 +40,15 @@ export default function CustomerList({ paginated }) {
                                     c.status === 'active'
                                         ? 'default'
                                         : c.status === 'banned'
-                                        ? 'destructive'
-                                        : 'secondary'
+                                          ? 'destructive'
+                                          : 'secondary'
                                 }
                             >
                                 {c.status?.charAt(0).toUpperCase() +
                                     c.status?.slice(1)}
                             </Badge>
                             <div className='text-sm text-muted-foreground'>
-                                {getOrderCount(c.id)} orders
+                                {getOrderCount(c.id, ordersData)} orders
                             </div>
                             <EditCustomerDialog customer={c} />
                             <DeleteCustomerDialog id={c.id} />

@@ -3,8 +3,9 @@ export type Product = {
     name: string;
     price: number;
     stock: number;
-    status: 'Active' | 'Discontinued';
+    status: 'active' | 'discontinued';
+    created_at: string;
 };
 
-export type CreateProduct = Omit<Product, 'id'>;
-export type UpdateProduct = Partial<Omit<Product, 'id'>>;
+export type CreateProduct = Omit<Product, 'id' | 'created_at'>;
+export type UpdateProduct = Partial<CreateProduct>;

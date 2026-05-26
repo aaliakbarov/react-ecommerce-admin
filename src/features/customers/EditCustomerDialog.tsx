@@ -11,6 +11,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/components/ui/dialog';
+import { Loader2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -19,13 +20,19 @@ import { updateCustomer } from '@/services/apiCustomers';
 
 import { toast } from 'sonner';
 
+import type { Customer, UpdateCustomer } from '@/types/customers';
+
 const formSchema = z.object({
     name: z.string().min(2, 'Name is too short'),
     email: z.string().email('Invalid email'),
     status: z.enum(['active', 'inactive', 'banned']),
 });
 
-export default function EditCustomerDialog({ customer }) {
+export default function EditCustomerDialog({
+    customer,
+}: {
+    customer: Customer;
+}) {
     const [open, setOpen] = useState(false);
     ////
     const queryClient = useQueryClient();
@@ -34,7 +41,7 @@ export default function EditCustomerDialog({ customer }) {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm({
+    } = useForm<UpdateCustomer>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: customer.name,
@@ -44,11 +51,11 @@ export default function EditCustomerDialog({ customer }) {
     });
     ////
     const mutation = useMutation({
-        mutationFn: (data) =>
+        mutationFn: (data: UpdateCustomer) =>
             updateCustomer({ id: customer.id, updates: data }),
         onSuccess: () => {
             toast.success('Customer updated successfully');
-            queryClient.invalidateQueries(['customers']);
+            queryClient.invalidateQueries({ queryKey: ['customers'] });
             setOpen(false);
         },
         onError: (err) => {
@@ -109,9 +116,9 @@ export default function EditCustomerDialog({ customer }) {
                     <Button
                         type='submit'
                         className='w-full'
-                        disabled={mutation.isLoading}
+                        disabled={mutation.isPending}
                     >
-                        {mutation.isLoading ? (
+                        {mutation.isPending ? (
                             <span className='flex items-center gap-2 justify-center'>
                                 <Loader2 className='w-4 h-4 animate-spin' />
                                 Saving...

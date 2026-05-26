@@ -34,3 +34,9 @@ export const checkStatus = async (setDbStatus, setLatency) => {
         setLatency('–');
     }
 };
+
+// Helper to count orders per customer
+export const getOrderCount = (customerId, ordersData) => {
+    return ordersData.filter((order) => order.customer_id === customerId)
+        .length;
+};

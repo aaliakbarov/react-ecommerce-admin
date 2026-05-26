@@ -16,6 +16,9 @@ import CustomerList from '@/features/customers/CustomerList';
 import { fetchCustomers } from '@/services/apiCustomers';
 
 import { Loader2 } from 'lucide-react';
+import type { Customer, PaginationTypes } from '@/types/customers';
+
+import usePagination from '@/hooks/usePagination';
 
 export default function Customers() {
     const {
@@ -32,25 +35,27 @@ export default function Customers() {
     const [search, setSearch] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
 
+    const [page, setPage] = useState(1);
+    const itemsPerPage = 4;
+
     const filtered = customers.filter((c) => {
         const matchSearch =
             c.name.toLowerCase().includes(search.toLowerCase()) ||
             c.email.toLowerCase().includes(search.toLowerCase()) ||
-            c.id.toLowerCase().includes(search.toLowerCase());
+            String(c.id).toLowerCase().includes(search.toLowerCase());
 
         const matchStatus = statusFilter === 'all' || c.status === statusFilter;
+
         return matchSearch && matchStatus;
     });
 
-    const [page, setPage] = useState(1);
-
-    const itemsPerPage = 8;
-    const totalPages = Math.ceil(filtered.length / itemsPerPage);
-    const paginated = filtered.slice(
-        (page - 1) * itemsPerPage,
-        page * itemsPerPage
+    const { totalPages, paginated } = usePagination<Customer>(
+        filtered,
+        page,
+        itemsPerPage,
     );
-    const pagination = { page, totalPages, setPage };
+
+    const pagination: PaginationTypes = { page, totalPages, setPage };
 
     useEffect(() => {
         setPage(1);

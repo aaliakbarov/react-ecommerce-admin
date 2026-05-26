@@ -26,7 +26,7 @@ const formSchema = z.object({
     name: z.string().min(2),
     price: z.coerce.number().min(1),
     stock: z.coerce.number().min(0),
-    status: z.enum(['Active', 'Discontinued']),
+    status: z.enum(['active', 'discontinued']),
 });
 
 export default function AddProductDialog() {
@@ -45,12 +45,12 @@ export default function AddProductDialog() {
             name: '',
             price: 0,
             stock: 0,
-            status: 'Active',
+            status: 'active',
         },
     });
     ////
     const mutation = useMutation({
-        mutationFn: (data: CreateProduct) => insertProduct(data),
+        mutationFn: insertProduct,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['products'] });
             toast.success('Product added successfully!');
@@ -116,8 +116,8 @@ export default function AddProductDialog() {
                             {...register('status')}
                             className='w-full mt-1 border rounded-md p-2 text-sm'
                         >
-                            <option value='Active'>Active</option>
-                            <option value='Discontinued'>Discontinued</option>
+                            <option value='active'>Active</option>
+                            <option value='discontinued'>Discontinued</option>
                         </select>
                         {errors.status && (
                             <p className='text-sm text-red-600'>

@@ -72,12 +72,15 @@ export function ProductList() {
                                     <td className='py-1'>
                                         <Badge
                                             variant={
-                                                product.status === 'Active'
+                                                product.status === 'active'
                                                     ? 'default'
                                                     : 'destructive'
                                             }
                                         >
-                                            {product.status}
+                                            {product.status
+                                                ?.charAt(0)
+                                                .toUpperCase() +
+                                                product.status?.slice(1)}
                                         </Badge>
                                     </td>
                                     <td className='py-1 text-right space-x-2'>

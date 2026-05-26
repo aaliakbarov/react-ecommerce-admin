@@ -21,14 +21,13 @@ import { updateProduct } from '@/services/apiProducts';
 import { Pencil } from 'lucide-react';
 
 import { toast } from 'sonner';
-
 import type { Product, UpdateProduct } from '@/types/products';
 
 const formSchema = z.object({
     name: z.string().min(2),
     price: z.coerce.number().min(0),
     stock: z.coerce.number().min(0),
-    status: z.enum(['Active', 'Discontinued']),
+    status: z.enum(['active', 'discontinued']),
 });
 
 export default function EditProductDialog({ product }: { product: Product }) {
@@ -119,8 +118,8 @@ export default function EditProductDialog({ product }: { product: Product }) {
                             {...register('status')}
                             className='w-full mt-1 border rounded-md p-2 text-sm'
                         >
-                            <option value='Active'>Active</option>
-                            <option value='Discontinued'>Discontinued</option>
+                            <option value='active'>Active</option>
+                            <option value='discontinued'>Discontinued</option>
                         </select>
                         {errors.status && (
                             <p className='text-sm text-red-600'>

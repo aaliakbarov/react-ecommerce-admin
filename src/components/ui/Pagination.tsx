@@ -1,6 +1,11 @@
+import type { PaginationTypes } from '@/types/customers';
 import { Button } from './button';
 
-export default function Pagination({ pagination }) {
+export default function Pagination({
+    pagination,
+}: {
+    pagination: PaginationTypes;
+}) {
     return (
         <div className='flex justify-between items-center mt-4'>
             <p className='text-sm text-muted-foreground'>
@@ -22,7 +27,7 @@ export default function Pagination({ pagination }) {
                     size='sm'
                     onClick={() =>
                         pagination.setPage((p) =>
-                            Math.min(p + 1, pagination.totalPages)
+                            Math.min(p + 1, pagination.totalPages),
                         )
                     }
                     disabled={pagination.page === pagination.totalPages}

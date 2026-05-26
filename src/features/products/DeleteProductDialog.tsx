@@ -25,7 +25,7 @@ export default function DeleteProductDialog({ id }: { id: Product['id'] }) {
     const queryClient = useQueryClient();
     ////
     const mutation = useMutation({
-        mutationFn: (id: Product['id']) => deleteProduct(id),
+        mutationFn: deleteProduct,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['products'] });
             toast.success('Product deleted');

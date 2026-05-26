@@ -17,16 +17,18 @@ import { Trash2 } from 'lucide-react';
 
 import { toast } from 'sonner';
 
-export default function DeleteCustomerDialog({ id }) {
+import type { Customer } from '@/types/customers';
+
+export default function DeleteCustomerDialog({ id }: { id: Customer['id'] }) {
     const [open, setOpen] = useState(false);
     ////
     const queryClient = useQueryClient();
     ////
     const mutation = useMutation({
-        mutationFn: () => deleteCustomer(id),
+        mutationFn: deleteCustomer,
         onSuccess: () => {
             toast.success('Customer deleted');
-            queryClient.invalidateQueries(['customers']);
+            queryClient.invalidateQueries({ queryKey: ['customers'] });
             setOpen(false);
         },
         onError: (err) => toast.error('Delete failed: ' + err.message),
@@ -52,10 +54,10 @@ export default function DeleteCustomerDialog({ id }) {
                     </Button>
                     <Button
                         variant='destructive'
-                        onClick={() => mutation.mutate()}
-                        disabled={mutation.isLoading}
+                        onClick={() => mutation.mutate(id)}
+                        disabled={mutation.isPending}
                     >
-                        {mutation.isLoading ? 'Deleting...' : 'Delete'}
+                        {mutation.isPending ? 'Deleting...' : 'Delete'}
                     </Button>
                 </DialogFooter>
             </DialogContent>
