@@ -1,8 +1,14 @@
 import CountUp from 'react-countup';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import type { StatCardProps } from '@/types/uiProps';
 
-export default function StatCard({ title, value, prefix = '', suffix = '' }) {
+export default function StatCard({
+    title,
+    value,
+    prefix = '',
+    suffix = '',
+}: StatCardProps) {
     return (
         <Card>
             <CardHeader className='pb-2'>

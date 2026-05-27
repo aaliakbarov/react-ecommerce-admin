@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
-import { navAppItems } from '../layout/AppLayout';
+import { navAppItems } from '../AppLayout';
 import {
     Sheet,
     SheetTrigger,
@@ -12,6 +12,7 @@ import {
 import { Button } from '@/components/ui/button';
 
 import { Menu } from 'lucide-react';
+import type { navAppItemsType } from '@/types/uiProps';
 
 export default function MobileSidebar() {
     const [open, setOpen] = useState(false);
@@ -31,21 +32,27 @@ export default function MobileSidebar() {
                 </SheetHeader>
                 <nav className='flex flex-col gap-1 px-4 py-2 '>
                     {/* eslint-disable-next-line */}
-                    {navAppItems.map(({ url, title, icon: Icon }) => (
-                        <NavLink
-                            key={url}
-                            to={url}
-                            onClick={() => setOpen(false)}
-                            className={({ isActive }) =>
-                                `flex items-center gap-3 px-3 py-2 rounded-md text-sm hover:bg-gray-200 transition ${
-                                    isActive ? 'bg-gray-200 font-semibold' : ''
-                                }`
-                            }
-                        >
-                            <Icon className='w-5 h-5' />
-                            <span className='text-xl font-light'>{title}</span>
-                        </NavLink>
-                    ))}
+                    {navAppItems.map(
+                        ({ url, title, icon: Icon }: navAppItemsType) => (
+                            <NavLink
+                                key={url}
+                                to={url}
+                                onClick={() => setOpen(false)}
+                                className={({ isActive }) =>
+                                    `flex items-center gap-3 px-3 py-2 rounded-md text-sm hover:bg-gray-200 transition ${
+                                        isActive
+                                            ? 'bg-gray-200 font-semibold'
+                                            : ''
+                                    }`
+                                }
+                            >
+                                <Icon className='w-5 h-5' />
+                                <span className='text-xl font-light'>
+                                    {title}
+                                </span>
+                            </NavLink>
+                        ),
+                    )}
                 </nav>
                 <div className='border-t text-muted-foreground text-center p-4'>
                     <span>

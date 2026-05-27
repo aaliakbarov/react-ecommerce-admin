@@ -1,4 +1,4 @@
-import type { PaginationTypes } from '@/types/customers';
+import type { PaginationTypes } from '@/types/general';
 import { Button } from './button';
 
 export default function Pagination({

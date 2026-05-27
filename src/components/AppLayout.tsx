@@ -1,11 +1,11 @@
 import { Outlet } from 'react-router-dom';
 
-import AppSidebar from '../ui/AppSidebar';
-import { SidebarProvider } from '../ui/sidebar';
-import MobileSidebar from '../ui/MobileSidebar';
+import AppSidebar from './ui/AppSidebar';
+import { SidebarProvider } from './ui/sidebar';
+import MobileSidebar from './ui/MobileSidebar';
 
 import { useAuth } from '@/context/AuthContext';
-import { AccountBox } from '../../features/auth/AccountBox';
+import { AccountBox } from '../features/auth/AccountBox';
 
 import {
     LayoutDashboard,

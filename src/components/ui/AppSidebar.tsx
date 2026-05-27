@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 
-import { navAppItems } from '../layout/AppLayout';
+import { navAppItems } from '../AppLayout';
 import {
     Sidebar,
     SidebarContent,
@@ -11,6 +11,7 @@ import {
     SidebarMenu,
     SidebarMenuItem,
 } from './sidebar';
+import type { navAppItemsType } from '@/types/uiProps';
 
 export default function AppSidebar() {
     return (
@@ -23,7 +24,7 @@ export default function AppSidebar() {
                     <SidebarGroup>
                         <SidebarGroupContent>
                             <SidebarMenu>
-                                {navAppItems.map((item) => (
+                                {navAppItems.map((item: navAppItemsType) => (
                                     <SidebarMenuItem key={item.title}>
                                         <NavLink
                                             to={item.url}

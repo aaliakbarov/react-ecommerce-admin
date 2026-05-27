@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import AppLayout from './components/layout/AppLayout.jsx';
+import AppLayout from './components/AppLayout.jsx';
 import Error from './pages/Error.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import Products from './pages/Products.jsx';
@@ -59,5 +59,5 @@ createRoot(document.getElementById('root')).render(
                 <RouterProvider router={router} />
             </AuthProvider>
         </QueryClientProvider>
-    </StrictMode>
+    </StrictMode>,
 );
