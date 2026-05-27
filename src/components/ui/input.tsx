@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/minor';
 import type { InputProps } from '@/types/uiProps';
 
 function Input({ className, type, ...props }: InputProps) {

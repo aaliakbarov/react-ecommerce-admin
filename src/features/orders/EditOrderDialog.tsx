@@ -16,8 +16,9 @@ import { updateOrder } from '@/services/apiOrders';
 
 import { toast } from 'sonner';
 import { Pencil } from 'lucide-react';
+import type { Order } from '@/types/orders';
 
-export default function EditOrderDialog({ order }) {
+export default function EditOrderDialog({ order }: { order: Order }) {
     const [open, setOpen] = useState(false);
     ////
     const queryClient = useQueryClient();
@@ -29,10 +30,10 @@ export default function EditOrderDialog({ order }) {
     });
     ////
     const mutation = useMutation({
-        mutationFn: (updates) => updateOrder(order.id, updates),
+        mutationFn: updateOrder,
         onSuccess: () => {
             toast.success('Order updated');
-            queryClient.invalidateQueries(['orders']);
+            queryClient.invalidateQueries({ queryKey: ['orders'] });
             setOpen(false);
         },
         onError: (err) => {
@@ -53,7 +54,9 @@ export default function EditOrderDialog({ order }) {
                 </DialogHeader>
 
                 <form
-                    onSubmit={handleSubmit((data) => mutation.mutate(data))}
+                    onSubmit={handleSubmit((data) =>
+                        mutation.mutate({ id: order.id, updates: data }),
+                    )}
                     className='space-y-4'
                 >
                     <div>
@@ -70,10 +73,10 @@ export default function EditOrderDialog({ order }) {
 
                     <Button
                         type='submit'
-                        disabled={mutation.isLoading}
+                        disabled={mutation.isPending}
                         className='w-full'
                     >
-                        {mutation.isLoading ? 'Saving...' : 'Update Order'}
+                        {mutation.isPending ? 'Saving...' : 'Update Order'}
                     </Button>
                 </form>
             </DialogContent>

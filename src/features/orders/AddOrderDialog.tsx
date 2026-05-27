@@ -21,21 +21,24 @@ import { Plus, Trash2 } from 'lucide-react';
 
 import { toast } from 'sonner';
 
+import type { CreateOrderForm } from '@/types/orders';
+import { calcItemTotal } from '@/utils/minor';
+import buildOrderPayload from '@/utils/buildOrderPayload';
+
 export default function AddOrderDialog() {
     const [open, setOpen] = useState(false);
-    ////
     const queryClient = useQueryClient();
-    ////
+    //// fetch customers for the select dropdown
     const { data: customers = [] } = useQuery({
         queryKey: ['customers'],
         queryFn: fetchCustomers,
     });
-    ////
+    //// fetch products for the select dropdown and price calculation
     const { data: products = [] } = useQuery({
         queryKey: ['products'],
         queryFn: fetchProducts,
     });
-    ////
+    //// form setup
     const {
         register,
         handleSubmit,
@@ -43,24 +46,23 @@ export default function AddOrderDialog() {
         control,
         reset,
         formState: { errors },
-    } = useForm({
+    } = useForm<CreateOrderForm>({
         defaultValues: {
             customer_id: '',
             items: [{ product_id: '', qnt: 1 }],
         },
     });
     const watchedItems = watch('items');
-    ////
     const { fields, append, remove } = useFieldArray({
         control,
         name: 'items',
     });
-    ////
+    //// mutation for creating order
     const mutation = useMutation({
-        mutationFn: (formData) => CreateOrder(formData, customers, products),
+        mutationFn: CreateOrder,
         onSuccess: () => {
             toast.success('Order added');
-            queryClient.invalidateQueries(['orders']);
+            queryClient.invalidateQueries({ queryKey: ['orders'] });
             setOpen(false);
             reset();
         },
@@ -68,18 +70,10 @@ export default function AddOrderDialog() {
             toast.error('Failed to add order: ' + err.message);
         },
     });
-    ////
-    const calcItemTotal = (item) => {
-        if (!item.product_id) return 0; // guard empty or undefined
-        const product = products.find(
-            (p) => String(p.id) === String(item.product_id)
-        );
-        return product ? product.price * item.qnt : 0;
-    };
-
+    //// calculate total amount based on watched items and products
     const total = watchedItems.reduce(
-        (sum, item) => sum + calcItemTotal(item),
-        0
+        (sum, item) => sum + calcItemTotal(item, products),
+        0,
     );
 
     if (!products.length) return <div>Loading products...</div>;
@@ -95,8 +89,13 @@ export default function AddOrderDialog() {
                 </DialogHeader>
 
                 <form
-                    onSubmit={handleSubmit((data) => {
-                        mutation.mutate(data);
+                    onSubmit={handleSubmit((data: CreateOrderForm) => {
+                        const payload = buildOrderPayload(
+                            data,
+                            customers,
+                            products,
+                        );
+                        mutation.mutate(payload);
                     })}
                     className='space-y-6'
                 >
@@ -147,9 +146,12 @@ export default function AddOrderDialog() {
 
                                 <span className='w-20 text-right font-mono'>
                                     $
-                                    {calcItemTotal(
-                                        watchedItems[index] || {}
-                                    ).toFixed(2)}
+                                    {watchedItems[index]
+                                        ? calcItemTotal(
+                                              watchedItems[index],
+                                              products,
+                                          ).toFixed(2)
+                                        : '0.00'}
                                 </span>
                                 <Button
                                     size='icon'
@@ -180,10 +182,10 @@ export default function AddOrderDialog() {
 
                     <Button
                         type='submit'
-                        disabled={mutation.isLoading}
+                        disabled={mutation.isPending}
                         className='w-full'
                     >
-                        {mutation.isLoading ? 'Submitting...' : 'Create Order'}
+                        {mutation.isPending ? 'Submitting...' : 'Create Order'}
                     </Button>
                 </form>
             </DialogContent>

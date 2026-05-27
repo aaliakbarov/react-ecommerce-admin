@@ -16,9 +16,10 @@ import CustomerList from '@/features/customers/CustomerList';
 import { fetchCustomers } from '@/services/apiCustomers';
 
 import { Loader2 } from 'lucide-react';
-import type { Customer, PaginationTypes } from '@/types/customers';
+import type { Customer } from '@/types/customers';
 
 import usePagination from '@/hooks/usePagination';
+import type { PaginationTypes } from '@/types/general';
 
 export default function Customers() {
     const {

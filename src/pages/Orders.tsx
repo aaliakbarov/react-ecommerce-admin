@@ -17,6 +17,9 @@ import {
 
 import { Loader2 } from 'lucide-react';
 import Pagination from '@/components/ui/Pagination';
+import type { PaginationTypes } from '@/types/general';
+import usePagination from '@/hooks/usePagination';
+import type { Order } from '@/types/orders';
 
 export default function Orders() {
     const { data, isLoading, isError } = useQuery({
@@ -40,13 +43,15 @@ export default function Orders() {
 
     const [page, setPage] = useState(1);
 
-    const itemsPerPage = 6;
-    const paginated = filtered.slice(
-        (page - 1) * itemsPerPage,
-        page * itemsPerPage
+    const itemsPerPage = 4;
+
+    const { totalPages, paginated } = usePagination<Order>(
+        filtered,
+        page,
+        itemsPerPage,
     );
-    const totalPages = Math.ceil(filtered.length / itemsPerPage);
-    const pagination = { page, totalPages, setPage };
+
+    const pagination: PaginationTypes = { page, totalPages, setPage };
 
     useEffect(() => {
         setPage(1);

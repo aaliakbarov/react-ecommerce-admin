@@ -5,7 +5,7 @@ import { useUserUptime } from '@/hooks/useUserUptime';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import { CircleCheck, Clock, Database, Wifi } from 'lucide-react';
-import { checkStatus } from '@/lib/utils';
+import { checkStatus } from '@/utils/minor';
 
 export default function SystemStatusCard() {
     const [dbStatus, setDbStatus] = useState({

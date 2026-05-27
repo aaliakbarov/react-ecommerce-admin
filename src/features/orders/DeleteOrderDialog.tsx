@@ -15,17 +15,22 @@ import { deleteOrder } from '@/services/apiOrders';
 import { Trash2 } from 'lucide-react';
 
 import { toast } from 'sonner';
+import type { Order } from '@/types/orders';
 
-export default function DeleteOrderConfirm({ orderId }) {
+export default function DeleteOrderConfirm({
+    orderId,
+}: {
+    orderId: Order['id'];
+}) {
     const [open, setOpen] = useState(false);
     ////
     const queryClient = useQueryClient();
     ////
     const mutation = useMutation({
-        mutationFn: () => deleteOrder(orderId),
+        mutationFn: deleteOrder,
         onSuccess: () => {
             toast.success('Order deleted');
-            queryClient.invalidateQueries(['orders']);
+            queryClient.invalidateQueries({ queryKey: ['orders'] });
             setOpen(false);
         },
         onError: (err) => {
@@ -54,10 +59,10 @@ export default function DeleteOrderConfirm({ orderId }) {
                     </Button>
                     <Button
                         variant='destructive'
-                        onClick={() => mutation.mutate()}
-                        disabled={mutation.isLoading}
+                        onClick={() => mutation.mutate(orderId)}
+                        disabled={mutation.isPending}
                     >
-                        {mutation.isLoading ? 'Deleting...' : 'Delete'}
+                        {mutation.isPending ? 'Deleting...' : 'Delete'}
                     </Button>
                 </div>
             </DialogContent>

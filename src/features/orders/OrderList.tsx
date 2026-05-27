@@ -6,8 +6,9 @@ import DeleteOrderConfirm from '@/features/orders/DeleteOrderDialog';
 import { fetchProducts } from '@/services/apiProducts';
 
 import { Badge } from '@/components/ui/badge';
+import type { Order } from '@/types/orders';
 
-export function OrderList({ paginated }) {
+export function OrderList({ paginated }: { paginated: Order[] }) {
     const { data: products = [] } = useQuery({
         queryKey: ['products'],
         queryFn: fetchProducts,
@@ -36,7 +37,7 @@ export function OrderList({ paginated }) {
                                 <p className='text-xs text-muted-foreground font-mono'>
                                     Created:{' '}
                                     {new Date(
-                                        order.created_at
+                                        order.created_at,
                                     ).toLocaleDateString()}
                                 </p>
                             </div>
@@ -46,8 +47,8 @@ export function OrderList({ paginated }) {
                                         order.status === 'pending'
                                             ? 'secondary'
                                             : order.status === 'shipped'
-                                            ? 'default'
-                                            : 'destructive'
+                                              ? 'default'
+                                              : 'destructive'
                                     }
                                 >
                                     {order.status}
@@ -66,7 +67,7 @@ export function OrderList({ paginated }) {
                                 <ul className='text-xs text-muted-foreground space-y-1'>
                                     {order.items.map((item, idx) => {
                                         const product = products.find(
-                                            (p) => p.id === item.product_id
+                                            (p) => p.id === item.product_id,
                                         );
                                         if (!product) return null;
                                         const itemTotal =

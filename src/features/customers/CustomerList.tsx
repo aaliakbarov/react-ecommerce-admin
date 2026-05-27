@@ -7,7 +7,7 @@ import { fetchOrders } from '@/services/apiOrders';
 
 import EditCustomerDialog from './EditCustomerDialog';
 import DeleteCustomerDialog from './DeleteCustomerDialog';
-import { getOrderCount } from '@/lib/utils';
+import { getOrderCount } from '@/utils/minor';
 import type { Customer } from '@/types/customers';
 
 export default function CustomerList({ paginated }: { paginated: Customer[] }) {

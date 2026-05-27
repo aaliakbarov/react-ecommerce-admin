@@ -10,7 +10,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import { Loader2 } from 'lucide-react';
-import { aggregateRevenueByDay } from '@/lib/utils';
+import { aggregateRevenueByDay } from '@/utils/minor';
 
 export default function ChartCard({ orders, isLoading }) {
     const chartData = aggregateRevenueByDay(orders);
