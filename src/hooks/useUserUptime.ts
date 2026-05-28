@@ -5,7 +5,7 @@ const LOGIN_TIMESTAMP_KEY = 'userLoginTimestamp';
 
 export function useUserUptime() {
     const [uptime, setUptime] = useState('Loading...');
-    const [startTime, setStartTime] = useState(null);
+    const [startTime, setStartTime] = useState<number | null>(null);
 
     useEffect(() => {
         const init = async () => {
@@ -42,7 +42,7 @@ export function useUserUptime() {
                         const now = Date.now();
                         localStorage.setItem(
                             LOGIN_TIMESTAMP_KEY,
-                            now.toString()
+                            now.toString(),
                         );
                         setStartTime(now);
                     }
@@ -52,7 +52,7 @@ export function useUserUptime() {
                     setStartTime(null);
                     setUptime('Not logged in');
                 }
-            }
+            },
         );
 
         return () => {

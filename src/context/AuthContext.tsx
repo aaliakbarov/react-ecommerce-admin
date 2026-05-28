@@ -1,11 +1,19 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import {
+    createContext,
+    useContext,
+    useEffect,
+    useState,
+    type ReactNode,
+} from 'react';
 import { supabase } from '@/services/supabaseClient';
 
-const AuthContext = createContext();
+import type { AuthContextType } from '@/types/auth';
 
-export function AuthProvider({ children }) {
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
+const AuthContext = createContext<AuthContextType | null>(null);
+
+export function AuthProvider({ children }: { children: ReactNode }) {
+    const [user, setUser] = useState<AuthContextType['user']>(null);
+    const [loading, setLoading] = useState<AuthContextType['loading']>(true);
 
     useEffect(() => {
         const getSession = async () => {
@@ -19,7 +27,7 @@ export function AuthProvider({ children }) {
         const { data: listener } = supabase.auth.onAuthStateChange(
             (_event, session) => {
                 setUser(session?.user ?? null);
-            }
+            },
         );
 
         getSession();
@@ -37,5 +45,11 @@ export function AuthProvider({ children }) {
 }
 // eslint-disable-next-line
 export function useAuth() {
-    return useContext(AuthContext);
+    const context = useContext(AuthContext);
+
+    if (!context) {
+        throw new Error('useAuth must be used within AuthProvider');
+    }
+
+    return context;
 }

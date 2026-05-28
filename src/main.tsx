@@ -11,7 +11,7 @@ import Settings from './pages/Settings.jsx';
 import Customers from './pages/Customers.jsx';
 import LoginPage from './pages/Login.jsx';
 
-import AuthCallback from './features/auth/AuthCallback.jsx';
+import AuthCallback from './features/auth/AuthCallback.js';
 import ProtectedRoute from './features/auth/ProtectedRoute.jsx';
 import { AuthProvider } from '@/context/AuthContext';
 

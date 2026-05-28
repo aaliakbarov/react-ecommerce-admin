@@ -7,11 +7,15 @@ import { Card, CardContent } from '@/components/ui/card';
 import { LoginForm } from '@/features/auth/LoginForm';
 
 import { toast } from 'sonner';
+import type { Credentials } from '@/types/auth';
 
 export default function LoginPage() {
     const navigate = useNavigate();
 
-    const onSubmit = async ({ email, password }) => {
+    const onSubmit = async ({
+        email,
+        password,
+    }: Credentials): Promise<void> => {
         const { error } = await supabase.auth.signInWithPassword({
             email,
             password,

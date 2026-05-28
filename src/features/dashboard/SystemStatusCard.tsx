@@ -6,19 +6,20 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import { CircleCheck, Clock, Database, Wifi } from 'lucide-react';
 import { checkStatus } from '@/utils/minor';
+import type { DbStatus } from '@/types/general';
 
 export default function SystemStatusCard() {
-    const [dbStatus, setDbStatus] = useState({
+    const [dbStatus, setDbStatus] = useState<DbStatus>({
         label: 'Checking...',
         color: 'text-yellow-500',
     });
-    const [latency, setLatency] = useState(null);
+    const [latency, setLatency] = useState<string>('');
     ////
     useEffect(() => {
         checkStatus(setDbStatus, setLatency);
     }, []);
     ////
-    const version = import.meta.env.VITE_APP_VERSION || 'Unknown';
+    const version: number = import.meta.env.VITE_APP_VERSION || 'Unknown';
     ////
     const uptime = useUserUptime();
 

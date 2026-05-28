@@ -6,8 +6,6 @@
 // import * as SeparatorPrimitive from '@radix-ui/react-separator';
 // import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
 
-import type { LucideIcon } from 'lucide-react';
-
 // // BUTTONS
 // export type ButtonProps = ComponentProps<'button'> & {
 //     variant?:
@@ -92,6 +90,8 @@ import type { LucideIcon } from 'lucide-react';
 // export type DropdownMenuRadioItemProps = ComponentProps<
 //     typeof DropdownMenuPrimitive.RadioItem
 // >;
+
+import type { LucideIcon } from 'lucide-react';
 
 export type navAppItemsType = {
     title: string;

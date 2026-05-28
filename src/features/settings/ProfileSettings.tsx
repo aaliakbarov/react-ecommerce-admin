@@ -18,6 +18,7 @@ import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 
 import { Eye, EyeOff } from 'lucide-react';
+import type { UpdateCredentials } from '@/types/settings';
 
 const schema = z
     .object({
@@ -53,7 +54,7 @@ export default function ProfileSettings() {
         setValue,
         watch,
         formState: { errors },
-    } = useForm({
+    } = useForm<UpdateCredentials>({
         resolver: zodResolver(schema),
         defaultValues: {
             email: '',
@@ -91,7 +92,7 @@ export default function ProfileSettings() {
     }, [setValue]);
 
     // Reasonable submit handler
-    const onSubmit = async (data) => {
+    const onSubmit = async (data: UpdateCredentials) => {
         setLoading(true);
 
         try {
@@ -112,7 +113,7 @@ export default function ProfileSettings() {
             if (emailChanged) {
                 if (pendingEmail === data.email) {
                     toast.error(
-                        'A confirmation email was already sent to this address.'
+                        'A confirmation email was already sent to this address.',
                     );
                 } else {
                     await updateEmail(data.email);
@@ -160,7 +161,7 @@ export default function ProfileSettings() {
                             onChange={(e) =>
                                 setValue(
                                     'email',
-                                    e.target.value.replace(/\s/g, '')
+                                    e.target.value.replace(/\s/g, ''),
                                 )
                             }
                             disabled={!!pendingEmail}
@@ -208,7 +209,7 @@ export default function ProfileSettings() {
                                 onChange={(e) =>
                                     setValue(
                                         'newPassword',
-                                        e.target.value.replace(/\s/g, '')
+                                        e.target.value.replace(/\s/g, ''),
                                     )
                                 }
                             />

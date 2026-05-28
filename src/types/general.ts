@@ -5,3 +5,8 @@ export type PaginationTypes = {
     totalPages: number;
     setPage: Dispatch<SetStateAction<number>>;
 };
+
+export type DbStatus = {
+    label: string;
+    color: string;
+};

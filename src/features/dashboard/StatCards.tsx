@@ -1,7 +1,8 @@
 import useStats from '@/hooks/useStats';
 import StatCard from '../../components/ui/StatCard';
+import type { Order } from '@/types/orders';
 
-export default function StatCards({ orders }) {
+export default function StatCards({ orders }: { orders: Order[] }) {
     const { totalOrders, totalSales, uniqueCustomers, revenue } =
         useStats(orders);
 

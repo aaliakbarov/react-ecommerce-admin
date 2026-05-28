@@ -1,4 +1,6 @@
-export default function useStats(orders) {
+import type { Order } from '../types/orders';
+
+export default function useStats(orders: Order[]) {
     const totalSales =
         orders?.reduce((sum, order) => sum + (order.amount || 0), 0) || 0;
     const totalOrders = orders?.length || 0;

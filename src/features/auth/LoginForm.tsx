@@ -3,12 +3,18 @@ import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
-export function LoginForm({ onSubmit }) {
+import type { Credentials } from '@/types/auth';
+
+export function LoginForm({
+    onSubmit,
+}: {
+    onSubmit: (data: Credentials) => Promise<void>;
+}) {
     const {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm();
+    } = useForm<Credentials>();
 
     return (
         <form

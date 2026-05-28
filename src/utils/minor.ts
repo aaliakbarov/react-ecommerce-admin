@@ -1,5 +1,7 @@
 import { supabase } from '@/services/supabaseClient';
-import type { CreateOrderForm } from '@/types/orders';
+import type { Customer } from '@/types/customers';
+import type { DbStatus } from '@/types/general';
+import type { CreateOrderForm, Order } from '@/types/orders';
 import type { Product } from '@/types/products';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -12,7 +14,7 @@ export function cn(...inputs) {
 
 // Aggregate revenue by day for charting
 
-export function aggregateRevenueByDay(orders) {
+export function aggregateRevenueByDay(orders: Order[]) {
     const result = {};
 
     for (const order of orders) {
@@ -30,7 +32,10 @@ export function aggregateRevenueByDay(orders) {
 
 // Check database connectivity and measure latency
 
-export const checkStatus = async (setDbStatus, setLatency) => {
+export const checkStatus = async (
+    setDbStatus: React.Dispatch<React.SetStateAction<DbStatus>>,
+    setLatency: React.Dispatch<React.SetStateAction<string>>,
+) => {
     const start = performance.now();
     try {
         const { error } = await supabase.from('Orders').select('*').limit(1);
@@ -45,7 +50,10 @@ export const checkStatus = async (setDbStatus, setLatency) => {
 };
 
 // Helper to count orders per customer
-export const getOrderCount = (customerId, ordersData) => {
+export const getOrderCount = (
+    customerId: Customer['id'],
+    ordersData: Order[],
+) => {
     return ordersData.filter((order) => order.customer_id === customerId)
         .length;
 };

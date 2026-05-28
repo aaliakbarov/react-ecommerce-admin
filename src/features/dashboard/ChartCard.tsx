@@ -11,8 +11,15 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import { Loader2 } from 'lucide-react';
 import { aggregateRevenueByDay } from '@/utils/minor';
+import type { Order } from '@/types/orders';
 
-export default function ChartCard({ orders, isLoading }) {
+export default function ChartCard({
+    orders,
+    isLoading,
+}: {
+    orders: Order[];
+    isLoading: boolean;
+}) {
     const chartData = aggregateRevenueByDay(orders);
 
     return (
