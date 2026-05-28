@@ -7,7 +7,7 @@
 A React + TypeScript-based admin panel for managing products, users, and orders in a virtual market.  
 Includes CRUD operations, dashboard analytics, and settings management, built with a focus on clean architecture and integration with Supabase as a backend.
 
----n
+---
 
 ## Features
 
